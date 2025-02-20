@@ -99,8 +99,6 @@ func (r *projectRepository) GetByID(id uint) (*model.Project, error) {
         WHERE id = $1`
 
 	var project model.Project
-	var images pq.StringArray
-	var tools pq.StringArray
 
 	err := r.db.QueryRow(query, id).Scan(
 		&project.ID,
@@ -112,9 +110,6 @@ func (r *projectRepository) GetByID(id uint) (*model.Project, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	project.Images = images
-	project.Tools = tools
 
 	return &project, nil
 }

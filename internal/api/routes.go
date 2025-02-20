@@ -3,11 +3,13 @@ package api
 import (
 	"project-portfolio-api/internal/handler"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func SetupRoutes(r *gin.Engine, projectHandler *handler.ProjectHandler) {
 	api := r.Group("/api")
+	api.Use(cors.Default())
 	{
 		projects := api.Group("/projects")
 		{

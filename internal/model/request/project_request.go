@@ -10,4 +10,5 @@ type UpdateProjectRequest struct {
 	Title       string   `json:"title"`
 	Description string   `json:"description"`
 	Tools       []string `json:"tools"`
+	Images      []string `json:"images" form:"images"`
 }

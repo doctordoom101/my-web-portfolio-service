@@ -9,7 +9,9 @@ import (
 	"project-portfolio-api/internal/handler"
 	"project-portfolio-api/internal/repository"
 	"project-portfolio-api/internal/service"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -34,6 +36,17 @@ func main() {
 
 	// Setup Gin router
 	r := gin.Default()
+	r.MaxMultipartMemory = 20 << 20
+
+	// Enable CORS for all origins
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:5173", "http://127.0.0.1:5173"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
 
 	// Create uploads directory if it doesn't exist
 	if err := os.MkdirAll("uploads", 0755); err != nil {
