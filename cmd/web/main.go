@@ -36,17 +36,33 @@ func main() {
 
 	// Setup Gin router
 	r := gin.Default()
+	// r.Use(cors.Default())
 	r.MaxMultipartMemory = 20 << 20
 
 	// Enable CORS for all origins
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"http://localhost:5173", "http://127.0.0.1:5173"},
-		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
+		AllowWildcard:    true, // **Tambahkan ini**
+		AllowFiles:       true,
 		MaxAge:           12 * time.Hour,
 	}))
+
+	r.GET("/cors-test", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "CORS works!",
+		})
+	})
+	// // 🔥 Tambahkan OPTIONS Handler Secara Manual 🔥
+	// r.OPTIONS("/api/projects", func(c *gin.Context) {
+	// 	c.Header("Access-Control-Allow-Origin", "http://localhost:5173")
+	// 	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+	// 	c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Accept, Authorization")
+	// 	c.AbortWithStatus(204) // No Content
+	// })
 
 	// Create uploads directory if it doesn't exist
 	if err := os.MkdirAll("uploads", 0755); err != nil {

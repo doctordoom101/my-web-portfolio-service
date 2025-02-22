@@ -236,3 +236,10 @@ func (h *ProjectHandler) Delete(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Project deleted successfully"})
 }
+
+func (h *ProjectHandler) HandleOptions(c *gin.Context) {
+	c.Header("Access-Control-Allow-Origin", "http://localhost:5173")
+	c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+	c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+	c.Status(http.StatusNoContent)
+}
